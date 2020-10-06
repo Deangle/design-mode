@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // function checkName() {
+    //   console.log(1)
+    // }
+    // function checkEmail() {
+    //   console.log(2)
+    // }
+
+    // var checkName = function() {
+    //   console.log(1)
+    // }
+    // var checkEmail = function() {
+    //   console.log(2)
+    // }
+
+
+    // var checkObject = {
+    //   checkName: function() {
+    //     console.log(1)
+    //   },
+    //   checkEmail: function() {
+    //     console.log(2)
+    //   }
+    // }
+
+    // var checkObject = function(){}
+    // checkObject.checkName = function() {
+    //   console.log(1)
+    // }
+    // checkObject.checkEmail = function() {
+    //   console.log(2)
+    // }
+
+    // var checkObject = function() {
+    //   return {
+    //     checkName: function() {
+    //       console.log(1)
+    //     },
+    //     checkEmail: function() {
+    //       console.log(2)
+    //     }
+    //   }
+    // }
+    // // 每次调用这个函数的时候，都会返回一个新的对象，这样在多人使用的时候就互不影响
+    // // 但是这个不是真正意义上的类，并且创建的对象 a 和 对象 checkObject 没有任何关系（返回出来的对象本身就和 checkObject 无关）
+    // var a = checkObject()
+    // a.checkName()
+
+    // var checkObject = function() {
+    //   this.checkName = function() {
+    //     console.log(1)
+    //   }
+    //   this.checkEmail = function() {
+    //     console.log(2)
+    //   }
+    // }
+    // // 将所有的方法放在函数内部，通过 this 定义的，所以每次通过 new 关键字创建新对象的时候，新创建的对象都会对类的 this 上的属性进行复制
+    // // 所以这些新创建的对象都会有一套自己的方法，但是这样做是很消耗性能的
+    // var a = new checkObject()
+    // a.checkName()
+
+    // var checkObject = function(){}
+    // checkObject.prototype.checkName = function() {
+    //   console.log(1)
+    // }
+    // checkObject.prototype.checkEmail = function() {
+    //   console.log(2)
+    // }
+    // 这样创建对象实例的时候，创建出来的对象所拥有的方法都是一个了，因为它们需要依赖 prototype 原型依次寻找，而找到的方法都是同一个，它们绑定在 checkObject 对象类的原型上
+    // 这种方式要将 prototype 写很多遍，所以也可以这样写：
+    // var checkObject = function(){}
+    // checkObject.prototype = {
+    //   checkName: function() {
+    //     console.log(1)
+    //   },
+    //   checkEmail: function() {
+    //     console.log(2)
+    //   }
+    // }
+    // var a = new checkObject()
+    // a.checkName()
+    // a.checkEmail()
+
+    // 这里调用了2个方法，对对象a书写了2遍，这是可以避免的，需要在每个方法末尾将当前对象返回，this 指向的就是当前对象
+    // var checkObject=function() {}
+    // checkObject.prototype={
+    //   checkName: function() {
+    //     console.log(1)
+    //     return this;
+    //   },
+    //   checkEmail: function() {
+    //     console.log(2)
+    //     return this;
+    //   }
+    // }
+    // var a = new checkObject()
+    // a.checkName().checkEmail()
+    // 或者
+    // var checkObject = {
+    //   checkName: function() {
+    //     console.log(1)
+    //     return this;
+    //   },
+    //   checkEmail: function() {
+    //     console.log(2)
+    //     return this;
+    //   }
+    // }
+    // checkObject.checkName().checkEmail()
+
+    // prototype.js 是一款 javacript 框架，最大的特定就是对源生对象（javascript 为我们提供的对象类，如 Function, Array, Object 等）的拓展
+    // 想给每个函数都添加一个方法可以这样写
+    // Function.prototype.checkName = function() {
+    //   console.log(1)
+    // }
+    // // 函数形式
+    // var fn = function(){}
+    // fn.checkName()
+    // // 类形式
+    // var fn = new Function()
+    // fn.checkName()
+
+    // 但是这么做会污染原生对象 Function，别人创建的函数也会被这个函数所污染，造成不必要的开销，但是可以抽象出一个统一添加方法的功能方法
+    // Function.prototype.addMethods = function(name, fn) {
+    //   this[name] = fn
+    // }
+    // 添加方法
+    // var methods = function(){}
+    // 或者
+    // var methods = new Function()
+    // methods.addMethods('checkName', function() {
+    //   console.log(1)
+    // })
+    // methods.addMethods('checkEmail', function() {
+    //   console.log(2)
+    // })
+    // methods.checkName()
+    // methods.checkEmail()
+
+    // 链式添加
+    // Function.prototype.addMethods = function(name, fn) {
+    //   this[name] = fn
+    //   return this;
+    // }
+
+    // var methods = new Function()
+    // methods.addMethods('checkName', function() {
+    //   console.log(1)
+    // }).addMethods('checkEmail', function() {
+    //   console.log(2)
+    // })
+    // methods.checkName()
+    // methods.checkEmail()
+
+
+    // 链式使用
+    // 函数式调用方式
+    // Function.prototype.addMethods=function(name,fn) {
+    //   this[name]=fn
+    //   return this;
+    // }
+
+    // var methods=new Function()
+    // methods.addMethods('checkName',function() {
+    //   console.log(1)
+    //   return this;
+    // }).addMethods('checkEmail',function() {
+    //   console.log(2)
+    //   return this;
+    // })
+    // methods.checkName().checkEmail()
+
+    
+  </script>
+</body>
+
+</html>

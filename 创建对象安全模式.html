@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 闭包是什么？
+    // 闭包是有权访问另外一个函数作用域中变量的函数，即在一个函数内部创建另一个函数
+
+    // var Book = function(title, time, type) {
+    //   this.title = title
+    //   this.time = time
+    //   this.type = type
+    // }
+
+    // var book = Book('Javascript', '2014', 'js') // 这个函数在全局作用域执行了，所以 this 指向的当前对象就是全局变量
+    // console.log(book) // undefined
+    // console.log(window.title)
+    // console.log(window.time)
+    // console.log(window.type)
+
+    // 创建对象的安全模式
+    var Book = function(title, time, type) {
+      // 判断执行过程中 this 是否是当前这个对象（如果是说明是用 new 创建的）
+      console.log(this)
+      if(this instanceof Book) {
+        this.title = title
+        this.time = time
+        this.type = type
+      } else { // 否则重新创建这个对象
+        return new Book(title, time, type)
+      }
+    }
+    var book = Book('Javascript', '2014', 'js')
+    console.log(book)
+  </script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 原型式继承
+    function inheritObject(o) {
+      // 声明一个过渡函数对象
+      function F() {}
+      // 过渡对象的原型继承父对象
+      F.prototype = o
+      // 返回过渡对象的一个实例，该实例的原型继承了父对象
+      return new F()
+    }
+
+    // 原型式继承就是对类式继承的一个封装，其中的过渡对象相当于类式继承中的子类，只不过在原型式中作为一个过渡对象出现，目的是为了创建要返回的新的实例化对象
+    // 由于 F 构造函数中无内容，开销比较小
+
+    const book = {
+      name: 'js book',
+      alikeBook: ['css book', 'html book']
+    }
+
+    const newBook = inheritObject(book)
+    newBook.name = 'ajax book'
+    newBook.alikeBook.push('xml book')
+
+    const otherBook = inheritObject(book)
+    otherBook.name = 'flash book'
+    otherBook.alikeBook.push('as book')
+
+    console.log(newBook.name)
+    console.log(newBook.alikeBook)
+
+    console.log(otherBook.name)
+    console.log(otherBook.alikeBook)
+
+    // 跟类式继承一样，父类对象 book 中的值类型的属性被复制，引用类型的属性被共用
+  </script>
+</body>
+</html>

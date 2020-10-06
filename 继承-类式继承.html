@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // ------- 子类的原型对象，类式继承 -------
+    // 类式继承
+    // 声明父类
+    function SuperClass() {
+      this.superValue=true
+    }
+    // 为父类添加共有方法
+    SuperClass.prototype.getSuperValue=function() {
+      return this.superValue
+    }
+    // 声明子类
+    function SubClass() {
+      this.subValue=false
+    }
+    // 继承父类
+    SubClass.prototype=new SuperClass()
+    // 为子类添加共有方法
+    SubClass.prototype.getSubValue=function() {
+      return this.subValue
+    }
+
+    var instance=new SubClass()
+    console.log(instance.getSuperValue()) // true, 从父类继承的方法
+    console.log(instance.getSubValue()) // false, 子类的方法
+
+    // 可以通过 instanceof 来检测某个对象是否是某个类的实例，或者说某个对象是否继承了某个类
+    // instanceof 是通过判断对象的 prototype 链来确定这个对象是否是某个类的实例，而不关心对象与类的自身结构
+    console.log(instance instanceof SuperClass) // true
+    console.log(instance instanceof SubClass) // true
+    console.log(SubClass instanceof SuperClass) // false, 是 SubClass.prototype 继承了 Superclass
+
+    /*
+      类式继承需要将第一个类的实例赋值给第二个类的原型，为什么要这么做？
+      类的原型对象的作用就是为类的原型添加共有方法，但类不能直接访问这些属性和方法，必须通过原型 prototype 来访问
+      当实例化一个父类的时候，新创建的对象复制了父类的构造函数内的属性和方法并且将原型 __proto__ 指向了父类的原型对象
+      这样就拥有了父类的原型对象上的属性与方法，并且这个新创建的对象可直接访问到父类原型对象上的属性和方法
+      如果将这个新创建的对象赋值给子类的原型，那么子类的原型就能访问到父类的原型属性和方法
+
+      新创建的对象不仅仅可以访问父类原型上的属性和方法，同样也可以访问从父类构造函数中复制的属性和方法
+      将这个对象赋值给子类的原型，那么这个子类的原型同样可以访问父类原型上的属性和方法与从父类构造函数中复制的属性和方法
+    */
+
+    /*
+      类式继承的缺点:
+      1. 由于子类通过其原型 prototype 对父类实例化，继承了父类，所以说父类中的共有属性要是引用类型，就会在子类中被所有实例共用
+      因此一个子类的实例更改子类原型从父类构造函数中继承来的共有属性就会直接影响到其他子类
+      2. 由于子类实现的继承是靠其原型 prototype 对父类的实例化实现，因此在创建父类的时候
+      是无法向父类传递参数的，因而在实例化父类的时候也无法对父类构造函数内的属性进行初始化
+    */
+    // 举例
+    function SuperClass() {
+      this.books = ['Javascript', 'html', 'css']
+    }
+    function SubClass() {}
+    SubClass.prototype = new SuperClass()
+    var instance1 = new SubClass()
+    var instance2 = new SubClass()
+    console.log(instance2.books) // ["Javascript", "html", "css"]
+    instance1.books.push('设计模式')
+    console.log(instance2.books) // ["Javascript", "html", "css", "设计模式"]
+
+    
+  </script>
+</body>
+
+</html>

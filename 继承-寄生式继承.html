@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 原型式继承
+    function inheritObject(o) {
+      function F(){}
+      F.prototype = o
+      return new F()
+    }
+
+    // 寄生式继承
+    // 声明基对象
+    var book = {
+      name: 'js book',
+      alikeBook: ['css book', 'html book']
+    }
+
+    function createBook(obj) {
+      // 通过原型式继承创建对象
+      const o = new inheritObject(obj)
+      // 拓展新对象
+      o.getName = function() {
+        console.log(name)
+      }
+      return o
+    }
+
+    // 寄生式继承就是对原型式继承的第二次封装，并且在这第二次封装过程中对继承的对象进行了扩展，这样新创建的对象不仅仅有父类中的属性和方法而且还添加新的属性和方法
+  </script>
+</body>
+</html>
