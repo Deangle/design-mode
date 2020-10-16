@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 工厂方法模式（Factory Method）：通过对产品类的抽象使其创建业务主要负责用于创建多类产品的实例
+
+      // 通过简单工厂模式实现需求
+      // 创建 JavaScript 类
+      // const Javascript = function (content) {
+      //   this.content = content;
+      //   (function (content) {
+      //     var div = document.createElement('div');
+      //     div.innerHTML = content;
+      //     div.style.background = 'skyblue';
+      //     document.body.appendChild(div);
+      //   })(content);
+      // };
+
+      // // 创建 Java 类
+      // const Java = function (content) {
+      //   this.content = content;
+      //   (function (content) {
+      //     var div = document.createElement('div');
+      //     div.innerHTML = content;
+      //     div.style.background = 'pink';
+      //     document.body.appendChild(div);
+      //   })(content);
+      // };
+
+      // // 创建 PHP 类
+      // const PHP = function (content) {
+      //   this.content = content;
+      //   (function (content) {
+      //     var div = document.createElement('div');
+      //     div.innerHTML = content;
+      //     div.style.background = 'yellow';
+      //     document.body.appendChild(div);
+      //   })(content);
+      // };
+
+      // // 创建工厂
+      // const Factory = function (type, content) {
+      //   switch (type) {
+      //     case 'Javascript':
+      //       return new Javascript(content);
+      //     case 'Java':
+      //       return new Java(content);
+      //     case 'PHP':
+      //       return new PHP(content);
+      //   }
+      // };
+
+      // Factory('Javascript', 'Javascript book');
+      // Factory('Java', 'Java book');
+      // Factory('PHP', 'PHP book');
+
+      // 简单工厂模式的缺点：通过简单工厂模式创建，每添加一个类就要修改两个地方
+      // 工厂方法在创建对象的时候避免了使用者与对象之间的耦合，用户不必关心创建对象的具体类，只需调用工厂方法即可
+      // 使用工厂方法模式，可以将工厂方法看作是一个实例化对象的工厂类，采用安全模式，将创建对象的基类放在工厂方法类的原型中即可
+      // 安全模式是为了避免使用类的时候，忽略了 new 关键字直接执行类，得到的并不是预期的对象
+
+      // 通过安全模式创建的工厂类
+      const Factory = function (type, content) {
+        if (this instanceof Factory) {
+          return new this[type](content);
+        } else {
+          return new Factory(type, content);
+        }
+      };
+
+      Factory.prototype = {
+        Javascript: function (content) {
+          this.content = content;
+          (function (content) {
+            var div = document.createElement('div');
+            div.innerHTML = content;
+            div.style.background = 'skyblue';
+            document.body.appendChild(div);
+          })(content);
+        },
+        Java: function (content) {
+          this.content = content;
+          (function (content) {
+            var div = document.createElement('div');
+            div.innerHTML = content;
+            div.style.background = 'pink';
+            document.body.appendChild(div);
+          })(content);
+        },
+        PHP: function (content) {
+          this.content = content;
+          (function (content) {
+            var div = document.createElement('div');
+            div.innerHTML = content;
+            div.style.background = 'yellow';
+            document.body.appendChild(div);
+          })(content);
+        },
+      };
+
+      // Factory('Javascript', 'javascript book');
+      // Factory('Java', 'java book');
+      // Factory('PHP', 'PHP book');
+
+      const data = [
+        { type: 'Javascript', content: 'javascript1' },
+        { type: 'Javascript', content: 'javascript2' },
+        { type: 'Javascript', content: 'javascript3' },
+        { type: 'Java', content: 'javascript1' },
+        { type: 'Java', content: 'javascript2' },
+        { type: 'Java', content: 'javascript3' },
+        { type: 'PHP', content: 'javascript1' },
+        { type: 'PHP', content: 'javascript2' },
+        { type: 'PHP', content: 'javascript3' },
+      ];
+
+      for (let i = 0, len = data.length; i < len; i++) {
+        Factory(data[i]['type'], data[i]['content']);
+      }
+    </script>
+  </body>
+</html>
